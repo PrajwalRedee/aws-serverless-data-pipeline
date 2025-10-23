@@ -16,11 +16,11 @@ It ingests streaming JSON data with **Kinesis**, processes it via **Lambda**, st
 | **Terraform** | Infrastructure as Code for full automation |
 
 
-Architecture Overview
+## Architecture Overview
 
 ![Architecture Diagram](image-3.png)
 
-Project Structure
+## Project Structure
 
 ![Structure](image.png)
 
@@ -62,7 +62,7 @@ Project Structure
 
     SELECT * FROM processed_data LIMIT 10;
 
-Sample Output
+## Sample Output
 
 ![Cloud watch logs](image-1.png)
 
