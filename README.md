@@ -18,45 +18,34 @@ It ingests streaming JSON data with **Kinesis**, processes it via **Lambda**, st
 
 Project Structure
 
-data-pipeline/
-├── terraform/
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   └── lambda.tf
-|   └── test_data.json
-│
-├── lambda/
-│   ├── process_stream.py
-│   └── process_stream.zip
-│
-├── glue/
-│   └── etl_job.py
-│
-|
-│
-└── README.md
+![Structure](image.png)
 
 Step-by-Step Setup Instructions
 
 1️⃣ Initialize Terraform
+
 cd terraform
 terraform init
 
 2️⃣ Plan Deployment
+
 terraform plan
 
 3️⃣ Apply Infrastructure
+
 terraform apply -auto-approve
 
 4️⃣ Send Test Data
+
 aws kinesis put-record `
   --stream-name log-stream `
   --partition-key testKey `
   --data file://test_data.json
 
 5️⃣ Run Glue Job
+
 aws glue start-job-run --job-name etl_raw_to_processed
 
 6️⃣ Query in Athena
+
 SELECT * FROM processed_data LIMIT 10;
