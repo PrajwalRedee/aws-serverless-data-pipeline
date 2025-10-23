@@ -16,36 +16,54 @@ It ingests streaming JSON data with **Kinesis**, processes it via **Lambda**, st
 | **Terraform** | Infrastructure as Code for full automation |
 
 
+Architecture Overview
+
+![Architecture Diagram](image-3.png)
+
 Project Structure
 
 ![Structure](image.png)
 
-Step-by-Step Setup Instructions
+
+---
+
+## Step-by-Step Setup Instructions
 
 1️⃣ Initialize Terraform
-
-cd terraform
-terraform init
+    
+    cd terraform
+    terraform init
 
 2️⃣ Plan Deployment
 
-terraform plan
+    terraform plan
 
 3️⃣ Apply Infrastructure
 
-terraform apply -auto-approve
+    terraform apply -auto-approve
 
-4️⃣ Send Test Data
+4️⃣ Copy etl_job.py to S3 bucket
 
-aws kinesis put-record `
-  --stream-name log-stream `
-  --partition-key testKey `
-  --data file://test_data.json
+    cd glue
+    aws s3 cp etl_job.py s3://{raw_data_bucket_name}/scripts/etl_job.py
 
-5️⃣ Run Glue Job
+5️⃣ Send Test Data
 
-aws glue start-job-run --job-name etl_raw_to_processed
+    aws kinesis put-record `
+    --stream-name log-stream `
+    --partition-key testKey `
+    --data file://test_data.json
 
-6️⃣ Query in Athena
+6️⃣ Run Glue Job
 
-SELECT * FROM processed_data LIMIT 10;
+    aws glue start-job-run --job-name etl_raw_to_processed
+
+7️⃣ Query in Athena
+
+    SELECT * FROM processed_data LIMIT 10;
+
+Sample Output
+
+![Cloud watch logs](image-1.png)
+
+![Athena qeury](image-2.png)
